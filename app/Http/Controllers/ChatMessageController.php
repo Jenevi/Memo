@@ -20,7 +20,7 @@ class ChatMessageController extends Controller
 {
       public function __invoke()
       {
-          // получим текущего пользователя
+          // получим текущего пользовател
           $user = Auth::user();
           // получим все заголовки его диалогов
           // вытащив из коллекции значение 'header'
