@@ -4,14 +4,16 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use App\Models\User;
+
 class ConversationTopicFactory extends Factory
 {
       /**
        * The name of the factory's corresponding model.
        *
-       * @var string
-       */
-      protected $model = ConversationTopic::class;
+      //  * @var string
+      //  */
+      // protected $model = ConversationTopic::class;
 
 
     /**
@@ -22,10 +24,8 @@ class ConversationTopicFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => function() {
-                return User::factory()->create()->id;
-            },
-            'topic' => $this->faker->sentence
+            'user_id' => User::all()->random()->id,
+            'topic' => $this->faker->sentence,
         ];
     }
 }

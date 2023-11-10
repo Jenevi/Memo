@@ -22,7 +22,7 @@ class ConversationTopic extends Model
       return $this->belongsTo(User::class);
     }
 
-    public function conversationTopics() {
+    public function ConversationMessage() {
       return $this->hasMany(ConversationMessage::class);
     }
 }

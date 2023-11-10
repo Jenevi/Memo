@@ -17,9 +17,9 @@ class CreateConversationMessagesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->text('message')->nullable();
-            $table->unsignedBigInteger('topic_id');
+            $table->unsignedBigInteger('conversation_topic_id');
 
-            $table->foreign('topic_id')
+            $table->foreign('conversation_topic_id')
               ->references('id')->on('conversation_topics')
               ->onDelete('cascade');
         });

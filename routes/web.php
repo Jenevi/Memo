@@ -26,11 +26,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::post('/ChatMessage/refreshTable', [\App\Http\Controllers\ChatMessageController::class, 'refreshTable']);
+// Route::get('/ChatMessage/refreshTable', [\App\Http\Controllers\ChatMessageController::class, 'refreshTable']);
+
 
 Route::post('/ChatMessage', [\App\Http\Controllers\ChatMessageController::class, 'store']);
 Route::get('/ChatMessage', [\App\Http\Controllers\ChatMessageController::class, '__invoke']);
 //
-// Route::post('/ChatMessage/refreshTable', [\App\Http\Controllers\ChatMessageController::class, 'refreshTable']);
 //
 //
 // //Route::post('/testUser2', [\App\Http\Controllers\TestUser2Controller::class, 'store']);

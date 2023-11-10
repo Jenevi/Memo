@@ -24,7 +24,10 @@ class ChatMessageController extends Controller
           $user = Auth::user();
           // получим все заголовки его диалогов
           // вытащив из коллекции значение 'header'
-          $titles = $user->conversationTopics->pluck('topic');
+          $titles = [];
+          if ($user and $user->conversationTopics) {
+            $titles = $user->conversationTopics->pluck('topic');
+          }
           return view('chat', [ 'user' => $user, 'titles' => $titles]);
       }
 
@@ -39,9 +42,42 @@ class ChatMessageController extends Controller
           $user = Auth::user();
           // получим все заголовки его диалогов
           // вытащив из коллекции значение 'header'
-          $titles = $user->conversationTopics->pluck('topic');
+          if ($user->conversationTopics) {
+            $titles = $user->conversationTopics->pluck('topic');
+          }
+
           return view('chat', ['user' => '$user', 'titles' => $titles]);
       }
+
+    public function refreshTable(Request $request)
+    {
+      // $data = array('ID' => '2', 'Name' => 'Nick', 'Value' = '84');
+      // return response()->json(array('ID' => '2', 'Name' => 'Nick', 'Value' = '84'));
+      // return json(array('ID' => '2', 'Name' => 'Nick', 'Value' = '84'));
+       // получим текущего пользователя
+      $user = Auth::user();
+      //         // получим все заголовки его диалогов
+      //         // вытащив из коллекции значение 'header'
+      //         $a = $user->titles_of_dialogues->pluck('header');
+      // $topic = $user->topic->where($request);
+      // user->conversationTopics->where('topic', 'Deserunt qui a odio ipsum molestiae possimus.');
+      $topic = $user->conversationTopics->where('topic', $request->input('0'));
+
+      $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
+
+
+
+      $data = [
+    ['ID' => 1, 'name' => 'Alice', 'value' => 'Value 1'],
+    ['id' => 2, 'name' => $user->conversationTopics, 'value' => 'Value 2'],
+    ['id' => 3, 'name' => $request, 'value' => 'Value 3'],
+    // Добавьте столько элементов, сколько вам нужно...
+    ];
+
+
+
+      return response()->json($messages->pluck('message'));
+    }
 }
 
 
@@ -85,8 +121,8 @@ class ChatMessageController extends Controller
 //         return response()->json(['message' => 'Request received']);
 //     }
 //
-//     public function refreshTable(Request $request)
-//     {
+    // public function refreshTable(Request $request)
+    // {
 //         // получим текущего пользователя
 //         $user = Auth::user();
 //
