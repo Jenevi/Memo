@@ -28,7 +28,11 @@ COPY . .
 # Завершение установки зависимостей
 RUN composer dump-autoload --optimize
 
+<<<<<<< HEAD
 CMD php artisan migrate --seed && php-fpm && php artisan db:seed
+=======
+CMD php artisan migrate --seed && php-fpm
+>>>>>>> 8fa91ed728d7376138ad0ef76376c41128df0cf6
 
 # Команда по умолчанию, запускающая сервер Laravel
 CMD php artisan serve --host=0.0.0.0 --port=80
