@@ -162,8 +162,7 @@ body {
                 $escapedTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');  // экранирование символов
                 echo "
                     <div class='container darker hovered clickable-block' id='$escapedTitle'>
-                    <p>$title</p>
-                    <span class='time-left'>11:05</span>
+                    <p class='clickable-block' id='$escapedTitle'>$title</p>
                     </div>
                 ";
             }
@@ -249,19 +248,15 @@ body {
   }
 
 
-        function updateTable(data) {
-            const table = document.getElementById('dataTable');
-            table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу, но сохранить заголовки
+    function updateTable(data) {
+        const table = document.getElementById('dataTable');
+        table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу, но сохранить заголовки
 
-            data.forEach(item => {
-                const row = table.insertRow();
-                // row.insertCell().textContent = item.id;
-                // row.insertCell().textContent = item.name;
-                // row.insertCell().textContent = item.value;
-                row.insertCell().textContent = item;
-                // row.className = 'th';
-            });
-        }
+        data.forEach(item => {
+            const row = table.insertRow();
+            row.insertCell().textContent = item;
+        });
+    }
 
 </script>
 
