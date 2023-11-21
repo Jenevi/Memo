@@ -60,5 +60,20 @@ class ChatMessageController extends Controller
       $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
 
       return response()->json($messages->pluck('message'));
+      // return response()->json($messages);
+
+    }
+
+    public function deleteMessage(Request $request)
+    {
+       // получим текущего (залогиненного) пользователя
+      $user = Auth::user();
+      //         // получим все заголовки его диалогов
+      //         // вытащив из коллекции значение 'topic'
+      $topic = $user->conversationTopics->where('topic', $request->input('0'));
+
+      $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
+
+      return response()->json($messages->pluck('message'));
     }
 }

@@ -88,14 +88,14 @@ body {
 
 .table_blur {
   background: #f5ffff;
-  border-collapse: separate; /* Отключаем слияние границ */
-  border-spacing: 5px; /* Убираем расстояние между ячейками */
+  /* border-collapse: separate; /* Отключаем слияние границ */
+  border-spacing: 0px; /* Убираем расстояние между ячейками */
   text-align: left;
 }
 
 .table_blur th,
 .table_blur td {
-  border: 1px solid #e3eef7;
+  border: 0px solid #e3eef7;
   padding: 10px 15px;
   position: relative;
   transition: all 0.5s ease;
@@ -116,8 +116,8 @@ body {
 
 /* Дополнительные стили для th */
 .table_blur th {
-  border-top: 1px solid #777777;
-  border-bottom: 1px solid #777777;
+  border-top: 0px solid #777777;
+  border-bottom: 0px solid #777777;
   /* Остальные стили */
 }
 
@@ -140,6 +140,98 @@ body {
 
 
 
+/* для кнопки home */
+
+.hidden{display:none}
+.fixed{position:fixed}
+.top-0{top:0}
+.right-0{right:0}
+.px-6{padding-left:1.5rem;padding-right:1.5rem}
+.py-4{padding-top:1rem;padding-bottom:1rem}
+
+/*
+.remove-button-class {
+     background-image: url('/images/button_image.jpg');
+    width: 32px;
+    height: 32px;
+}
+
+
+.button-size {
+    width: 24px;
+    height: 24px;
+    padding: 0px 0px;
+    border: 0;
+    background-color: transparent;
+}
+
+.button-image {
+    width: 24px;
+    height: 24px;
+} */
+
+
+
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Это выровняет элементы по центру по вертикали */
+}
+
+.header-text {
+  flex: 1; /* Это позволяет тексту занимать доступное пространство */
+}
+
+.button-size {
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+}
+
+.button-image {
+  width: 20px;
+  height: 20px;
+}
+
+
+
+
+
+
+
+
+.table_blur th, .table_blur td {
+  border: 0px solid #ddd;
+  border-collapse: collapse;
+}
+
+/* Стилизация для скрытия границ между определенными ячейками */
+.no-border-right {
+  border-right: none;
+}
+
+.no-border-left {
+  border-left: none;
+}
+
+/* Дополнительные стили для выравнивания содержимого */
+.table-cell-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+
+
+
+
+
+
+
 
 </style>
 </head>
@@ -147,8 +239,18 @@ body {
 
 <h2>Chat Messages</h2>
 
+
+
+<div class='fixed top-0 right-0 px-6 py-4'>
+  <a href="http://127.0.0.1:8080/Dashboard" class="text-sm text-gray-700 dark:text-gray-500 underline">Logout</a>
+</div>
+
+
 {{--подключим библиотеку jquery--}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
 
 <!-- контент первого столбца -->
 <div class="column1">
@@ -185,17 +287,22 @@ body {
 
     <div id="messagesContainer"></div>
 
-    <!-- здесь должна быть таблица реплик -->
 
-    <div class="table-container">
-      <table id="dataTable" class = 'table_blur'>
-        <tr>
-            <th>Messages</th>
-        </tr>
-      <!-- Содержимое таблицы будет вставлено сюда с помощью JavaScript -->
-      </table>
-    </div>
+
+<div class="table-container">
+  <table id="dataTable" class="table_blur">
+    <tr>
+      <th>
+        <div class="header-container">
+          <span class="header-text">Messages</span>
+
+        </div>
+      </th>
+    </tr>
+    <!-- Содержимое таблицы будет вставлено сюда с помощью JavaScript -->
+  </table>
 </div>
+
 
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -206,13 +313,14 @@ body {
         }
     });
 
-
+        // получаем текст заголовков (ConversationTopic)
         $(document).ready(function() {
 
             $('.clickable-block').on('click', function(event){
               // var data = $(event.target).text(); // Получаем текст элемента
               var data = $(event.target).attr('id'); // Получаем текст элемента
-
+              sessionStorage.setItem('ConversationTopic', data); // Сохраняем
+              /// выбранный заголовок (ConversationTopic)
               fetchDataAndUpdateTable(data)});
         });
 
@@ -241,20 +349,62 @@ body {
       return response.json();
     })
     .then(data => {
+      // let firstElement = data[0]; // Первый элемент - массив
+      // let idsFromFirstElement = firstElement.map(item => item.id);
+
         console.log("Полученные данные:", data); // Проверяем, что получаем данные
         updateTable(data);
     })
     .catch(error => console.error('Ошибка:', error));
   }
 
+  function fetchDeletingMessage(payload) {
+    // запрос удаления сообщения
+    fetch('ChatMessage/deleteMessage', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      body: JSON.stringify(payload)
+    })
+  }
+
+
+
+  // Функция для создания кнопки
+function createDeleteButton() {
+  const button = document.createElement("button");
+  button.className = "button-size";
+  button.innerHTML = '<img src="/images/remove-button.png" alt="Button Image" class="button-image">';
+  // Добавьте здесь логику для удаления строки
+  button.onclick = function() {
+    // Логика удаления
+    var text = $(this).closest('tr').find('td:first').text();
+    var ftch = sessionStorage.getItem('ConversationTopic');
+    fetchDeletingMessage(ftch); // функция удаления реплики
+    fetchDataAndUpdateTable(ftch); // обновляем таблицу
+    // Действия с текстом, например, вывод в консоль
+    console.log(text);
+  };
+  return button;
+}
+
 
     function updateTable(data) {
         const table = document.getElementById('dataTable');
-        table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу, но сохранить заголовки
+        table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
+        // но сохранить заголовки
 
         data.forEach(item => {
             const row = table.insertRow();
+            row.setAttribute("message_id", 'text_mess_id'); // Предполагая, что у каждого item есть свойство message_id
             row.insertCell().textContent = item;
+  
+            // Добавление ячейки с кнопкой
+            const cellButton = row.insertCell();
+            cellButton.appendChild(createDeleteButton());
         });
     }
 
