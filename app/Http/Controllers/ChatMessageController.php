@@ -26,7 +26,8 @@ class ChatMessageController extends Controller
           // вытащив из коллекции значение 'header'
           $titles = [];
           if ($user and $user->conversationTopics) {
-            $titles = $user->conversationTopics->pluck('topic');
+            // $titles = $user->conversationTopics->pluck('topic');
+            $titles = $user->conversationTopics;
           }
           return view('chat', [ 'user' => $user, 'titles' => $titles]);
       }

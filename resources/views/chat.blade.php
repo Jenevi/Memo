@@ -233,7 +233,7 @@ body {
 <!-- контент первого столбца -->
 <div class="column1">
 
-{{--    выводим заголовки диалогов--}}
+<!-- {{--    выводим заголовки диалогов--}} -->
     <?php
     /**
      * @var string $titles
@@ -241,8 +241,8 @@ body {
             foreach ($titles as $title){
                 $escapedTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');  // экранирование символов
                 echo "
-                    <div class='container darker hovered clickable-block' id='$escapedTitle'>
-                    <p class='clickable-block' id='$escapedTitle'>$title</p>
+                    <div class='container darker hovered clickable-block' topic_id='$title->id' id='$title->topic'>
+                    <p class='clickable-block' id='$escapedTitle'>$title->topic</p>
                     </div>
                 ";
             }
@@ -359,8 +359,9 @@ function createDeleteButton() {
   // Добавьте здесь логику для удаления строки
   button.onclick = function() {
     // Логика удаления
-    var text = $(this).closest('tr').find('td:first').text();
-    var ftch = sessionStorage.getItem('ConversationTopic');
+    var text = $(this).closest('tr');
+    var ftch = sessionStorage.getItem('message_id');
+    console.log(ftch);
     fetchDeletingMessage(ftch); // функция удаления реплики
     fetchDataAndUpdateTable(ftch); // обновляем таблицу
     // Действия с текстом, например, вывод в консоль
@@ -374,21 +375,13 @@ function createDeleteButton() {
         const table = document.getElementById('dataTable');
         table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
         // но сохранить заголовки
+        let topic_id = data.topic[0].id;
+        console.log(topic_id);
 
-
-        let messages = data.messages;
-        // Извлекаем только сообщения из каждого объекта
-        let messageArray = Object.values(messages).map(item => item.message);
-        // console.log(messageArray);
-
-
-        Object.values(messages).forEach(item => {
+        Object.values(data.messages).forEach(item => {
             const row = table.insertRow();
             row.setAttribute("message_id", item.id); // Предполагая, что у каждого item есть свойство message_id
             row.insertCell().textContent = item.message;
-
-            console.log(item);
-
             // Добавление ячейки с кнопкой
             const cellButton = row.insertCell();
             cellButton.appendChild(createDeleteButton());
