@@ -149,28 +149,6 @@ body {
 .px-6{padding-left:1.5rem;padding-right:1.5rem}
 .py-4{padding-top:1rem;padding-bottom:1rem}
 
-/*
-.remove-button-class {
-     background-image: url('/images/button_image.jpg');
-    width: 32px;
-    height: 32px;
-}
-
-
-.button-size {
-    width: 24px;
-    height: 24px;
-    padding: 0px 0px;
-    border: 0;
-    background-color: transparent;
-}
-
-.button-image {
-    width: 24px;
-    height: 24px;
-} */
-
-
 
 
 
@@ -351,8 +329,8 @@ body {
     .then(data => {
       // let firstElement = data[0]; // Первый элемент - массив
       // let idsFromFirstElement = firstElement.map(item => item.id);
-
-        console.log("Полученные данные:", data); // Проверяем, что получаем данные
+        // data = data['messages']
+        // console.log("Полученные данные:", data); // Проверяем, что получаем данные
         updateTable(data);
     })
     .catch(error => console.error('Ошибка:', error));
@@ -386,7 +364,7 @@ function createDeleteButton() {
     fetchDeletingMessage(ftch); // функция удаления реплики
     fetchDataAndUpdateTable(ftch); // обновляем таблицу
     // Действия с текстом, например, вывод в консоль
-    console.log(text);
+    // console.log(text);
   };
   return button;
 }
@@ -397,11 +375,20 @@ function createDeleteButton() {
         table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
         // но сохранить заголовки
 
-        data.forEach(item => {
+
+        let messages = data.messages;
+        // Извлекаем только сообщения из каждого объекта
+        let messageArray = Object.values(messages).map(item => item.message);
+        // console.log(messageArray);
+
+
+        Object.values(messages).forEach(item => {
             const row = table.insertRow();
-            row.setAttribute("message_id", 'text_mess_id'); // Предполагая, что у каждого item есть свойство message_id
-            row.insertCell().textContent = item;
-  
+            row.setAttribute("message_id", item.id); // Предполагая, что у каждого item есть свойство message_id
+            row.insertCell().textContent = item.message;
+
+            console.log(item);
+
             // Добавление ячейки с кнопкой
             const cellButton = row.insertCell();
             cellButton.appendChild(createDeleteButton());

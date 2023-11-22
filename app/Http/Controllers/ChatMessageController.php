@@ -59,7 +59,7 @@ class ChatMessageController extends Controller
 
       $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
 
-      return response()->json($messages->pluck('message'));
+      return response()->json(['messages'=> $messages, 'topic' => $topic]);
       // return response()->json($messages);
 
     }
