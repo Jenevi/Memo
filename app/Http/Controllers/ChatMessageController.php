@@ -15,6 +15,7 @@ use App\Models\ConversationTopic;
 use App\Models\ConversationMessage;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ChatMessageController extends Controller
 {
@@ -56,25 +57,36 @@ class ChatMessageController extends Controller
       $user = Auth::user();
       //         // получим все заголовки его диалогов
       //         // вытащив из коллекции значение 'topic'
-      $topic = $user->conversationTopics->where('topic', $request->input('0'));
+      // $topic = $user->conversationTopics->where('topic', $request->input('0'));
+      $topic = ConversationTopic::all()->where('id', $request->input('0'))->first();
 
-      $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
+      // $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
+      $messages = ConversationMessage::all()->where('conversation_topic_id', $request->input('0'));
 
-      return response()->json(['messages'=> $messages, 'topic' => $topic]);
-      // return response()->json($messages);
+
+      return response()->json(['messages'=> $messages, 'topic' => $topic, 'test' => $request]);
+      // return response()->json($request);
 
     }
 
     public function deleteMessage(Request $request)
     {
-       // получим текущего (залогиненного) пользователя
-      $user = Auth::user();
-      //         // получим все заголовки его диалогов
-      //         // вытащив из коллекции значение 'topic'
-      $topic = $user->conversationTopics->where('topic', $request->input('0'));
+      //  // получим текущего (залогиненного) пользователя
+      // $user = Auth::user();
+      // //         // получим все заголовки его диалогов
+      // //         // вытащив из коллекции значение 'topic'
+      // $topic = $user->conversationTopics->where('topic', $request->input('0'));
+      //
+      // $messages = ConversationMessage::all()->where('conversation_topic_id', $request->input('0'));
+      Log::error($request);
+      $message = ConversationMessage::all()->where('id', $request->input('0'))->first();
 
-      $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
+      $message->delete();
 
-      return response()->json($messages->pluck('message'));
+
+      return response()->json($request);
+
+      // $user = User::find($id);
+      // $user->delete();
     }
 }

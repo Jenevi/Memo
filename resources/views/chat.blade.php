@@ -242,7 +242,7 @@ body {
                 $escapedTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');  // экранирование символов
                 echo "
                     <div class='container darker hovered clickable-block' topic_id='$title->id' id='$title->topic'>
-                    <p class='clickable-block' id='$escapedTitle'>$title->topic</p>
+                    <p class='clickable-block' topic_id='$title->id' id='$escapedTitle'>$title->topic</p>
                     </div>
                 ";
             }
@@ -296,7 +296,7 @@ body {
 
             $('.clickable-block').on('click', function(event){
               // var data = $(event.target).text(); // Получаем текст элемента
-              var data = $(event.target).attr('id'); // Получаем текст элемента
+              var data = $(event.target).attr('topic_id'); // Получаем текст элемента
               sessionStorage.setItem('ConversationTopic', data); // Сохраняем
               /// выбранный заголовок (ConversationTopic)
               fetchDataAndUpdateTable(data)});
@@ -310,7 +310,7 @@ body {
 
   function fetchDataAndUpdateTable(payload) {
 
-
+    // console.log(payload);
     fetch('/ChatMessage/refreshTable', {
       method: 'POST',
       headers: {
@@ -331,6 +331,7 @@ body {
       // let idsFromFirstElement = firstElement.map(item => item.id);
         // data = data['messages']
         // console.log("Полученные данные:", data); // Проверяем, что получаем данные
+        // console.log('updateTable(data):', data);
         updateTable(data);
     })
     .catch(error => console.error('Ошибка:', error));
@@ -359,11 +360,20 @@ function createDeleteButton() {
   // Добавьте здесь логику для удаления строки
   button.onclick = function() {
     // Логика удаления
-    var text = $(this).closest('tr');
-    var ftch = sessionStorage.getItem('message_id');
-    console.log(ftch);
-    fetchDeletingMessage(ftch); // функция удаления реплики
-    fetchDataAndUpdateTable(ftch); // обновляем таблицу
+
+    // Находим ближайшую родительскую строку (<tr>)
+    let row = this.closest('tr');
+    // Получаем значение атрибута message_id
+    let messageId = row.getAttribute('message_id');
+    let topicId = row.getAttribute('topic_id');
+    // console.log('Message ID:', messageId, 'Topic_id:', topicId);
+
+    // var text = $(this).closest('tr').getAttribute('message_id');
+    // var ftch = sessionStorage.getItem('message_id');
+    console.log('messageId:', messageId, 'topicId:', topicId);
+
+    fetchDeletingMessage(messageId); // функция удаления реплики
+    fetchDataAndUpdateTable(topicId); // обновляем таблицу
     // Действия с текстом, например, вывод в консоль
     // console.log(text);
   };
@@ -375,14 +385,16 @@ function createDeleteButton() {
         const table = document.getElementById('dataTable');
         table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
         // но сохранить заголовки
-        let topic_id = data.topic[0].id;
-        console.log(topic_id);
+        console.log('updData', data);
 
         Object.values(data.messages).forEach(item => {
             const row = table.insertRow();
             row.setAttribute("message_id", item.id); // Предполагая, что у каждого item есть свойство message_id
+            row.setAttribute("topic_id", item.conversation_topic_id); // Предполагая, что у каждого item есть свойство message_id
             row.insertCell().textContent = item.message;
             // Добавление ячейки с кнопкой
+            // console.log('updateTable(data):', data.topic.id);
+            console.log('updateTable(data):', item.conversation_topic_id);
             const cellButton = row.insertCell();
             cellButton.appendChild(createDeleteButton());
         });
