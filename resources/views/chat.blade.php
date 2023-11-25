@@ -255,15 +255,13 @@ body {
     <!-- контент первого столбца -->
 
 <!-- {{--    кнопка ввода новой реплики--}} -->
-    <div id="chatbox"></div>
+<form id="myForm1">
+  <input type="text" name="message" placeholder="Введите сообщение">
+  <!-- Предположим, что у вас есть скрытое поле для message_id -->
+  <input type="hidden" name="message_id" value="123">
+  <button type="button" id="submitButton1">Отправить</button>
+</form>
 
-    <form method="POST" action="/ChatMessage">
-        @csrf
-        <input type="text" name="text">
-        <button type="submit">Отправить</button>
-    </form>
-
-    <div id="messagesContainer"></div>
 
 
 
@@ -302,10 +300,47 @@ body {
               fetchDataAndUpdateTable(data)});
         });
 
-        // вызов функции заплнения таблицы при окончании загрузки страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchDataAndUpdateTable();
-        });
+
+          document.getElementById('submitButton1').addEventListener('click', function() {
+              // Предположим, что вы хотите отправить форму без перезагрузки страницы
+              const formData = new FormData(document.getElementById('myForm1'));
+              console.log(formData.text);
+
+              let data = sessionStorage.getItem('ConversationTopic');
+
+              // Здесь вы можете использовать Fetch API для отправки данных
+              fetch('ChatMessage/addMessage', { // Замените 'your-endpoint' на URL, куда нужно отправить форму
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify({'topic_id': data, 'text': formData.get('message')}),
+              })
+              .then(response => {
+                if (response.ok) {
+                  return response.json(); // или response.text(), если ответ в виде текста
+                }
+                throw new Error('Network response was not ok.');
+              })
+              .then(data => {
+                // console.log('Success:', data);
+                // Здесь код для обработки успешной отправки
+                // updateTable();
+                fetchDataAndUpdateTable(data.topic_id);
+                console.log('then', data.topic_id);
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+                // Здесь код для обработки ошибок отправки
+              });
+            });
+
+        // // вызов функции заплнения таблицы при окончании загрузки страницы
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     fetchDataAndUpdateTable();
+        // });
 
 
   function fetchDataAndUpdateTable(payload) {
@@ -370,7 +405,7 @@ function createDeleteButton() {
 
     // var text = $(this).closest('tr').getAttribute('message_id');
     // var ftch = sessionStorage.getItem('message_id');
-    console.log('messageId:', messageId, 'topicId:', topicId);
+    // console.log('messageId:', messageId, 'topicId:', topicId);
 
     fetchDeletingMessage(messageId); // функция удаления реплики
     fetchDataAndUpdateTable(topicId); // обновляем таблицу
@@ -385,7 +420,7 @@ function createDeleteButton() {
         const table = document.getElementById('dataTable');
         table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
         // но сохранить заголовки
-        console.log('updData', data);
+        // console.log('updData', data);
 
         Object.values(data.messages).forEach(item => {
             const row = table.insertRow();
@@ -394,7 +429,7 @@ function createDeleteButton() {
             row.insertCell().textContent = item.message;
             // Добавление ячейки с кнопкой
             // console.log('updateTable(data):', data.topic.id);
-            console.log('updateTable(data):', item.conversation_topic_id);
+            // console.log('updateTable(data):', item.conversation_topic_id);
             const cellButton = row.insertCell();
             cellButton.appendChild(createDeleteButton());
         });

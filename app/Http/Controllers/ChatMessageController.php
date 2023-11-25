@@ -51,42 +51,28 @@ class ChatMessageController extends Controller
           return view('chat', ['user' => '$user', 'titles' => $titles]);
       }
 
+    // функция обновления таблицы реплик
     public function refreshTable(Request $request)
     {
-       // получим текущего (залогиненного) пользователя
-      $user = Auth::user();
-      //         // получим все заголовки его диалогов
-      //         // вытащив из коллекции значение 'topic'
-      // $topic = $user->conversationTopics->where('topic', $request->input('0'));
-      $topic = ConversationTopic::all()->where('id', $request->input('0'))->first();
-
-      // $messages = ConversationMessage::all()->where('conversation_topic_id', $topic->first()->id);
-      $messages = ConversationMessage::all()->where('conversation_topic_id', $request->input('0'));
-
-
-      return response()->json(['messages'=> $messages, 'topic' => $topic, 'test' => $request]);
-      // return response()->json($request);
-
+      // в $request приходит id для ConversationTopic
+      $topic = ConversationTopic::find($request->input('0'));
+      $messages = ConversationMessage::where('conversation_topic_id', $request->input('0'))->get();
+      return response()->json(['messages'=> $messages, 'topic' => $topic]);
     }
 
     public function deleteMessage(Request $request)
     {
-      //  // получим текущего (залогиненного) пользователя
-      // $user = Auth::user();
-      // //         // получим все заголовки его диалогов
-      // //         // вытащив из коллекции значение 'topic'
-      // $topic = $user->conversationTopics->where('topic', $request->input('0'));
-      //
-      // $messages = ConversationMessage::all()->where('conversation_topic_id', $request->input('0'));
-      Log::error($request);
-      $message = ConversationMessage::all()->where('id', $request->input('0'))->first();
-
+      $message = ConversationMessage::find($request->input('0'));
       $message->delete();
-
-
       return response()->json($request);
+    }
 
-      // $user = User::find($id);
-      // $user->delete();
+    public function addMessage(Request $request)
+    {
+      $message = new ConversationMessage;
+      $message->message = $request->input('text');
+      $message->conversation_topic_id = $request->input('topic_id');
+      $message->save();
+      return response()->json($request);
     }
 }

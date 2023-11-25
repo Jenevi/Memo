@@ -24,7 +24,8 @@ Route::get('/Dashboard', [App\Http\Controllers\HomeController::class, 'index'])-
 
 Route::post('/ChatMessage/refreshTable', [\App\Http\Controllers\ChatMessageController::class, 'refreshTable']);
 Route::post('/ChatMessage/deleteMessage', [\App\Http\Controllers\ChatMessageController::class, 'deleteMessage']);
+Route::post('/ChatMessage/addMessage', [\App\Http\Controllers\ChatMessageController::class, 'addMessage']);
 
 
-Route::post('/ChatMessage', [\App\Http\Controllers\ChatMessageController::class, 'store']);
+// Route::post('/ChatMessage', [\App\Http\Controllers\ChatMessageController::class, 'store']);
 Route::get('/ChatMessage', [\App\Http\Controllers\ChatMessageController::class, '__invoke']);
