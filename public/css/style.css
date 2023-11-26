@@ -149,6 +149,10 @@ body {
   border: none;
   width: 20px;
   height: 20px;
+  /* align-self: flex-end; */
+  position: absolute;
+  right: 10px; /* Прижимаем к правому краю */
+  top: 8px;
 }
 
 .button-image {
