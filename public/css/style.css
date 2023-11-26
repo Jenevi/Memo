@@ -1,0 +1,180 @@
+body {
+    margin: 0 auto;
+    max-width: 1600px;
+    padding: 0 20px;
+}
+
+.container {
+    border: 2px solid #dedede;
+    background-color: #f6d2e5;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    word-wrap: break-word;
+}
+
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
+    word-wrap: break-word;
+    position: relative;
+    left: -20px; /* Смещение вправо на -20 пикселей */
+}
+
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.container img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+.container img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
+}
+
+ .column1 {
+     width: 30%; /* каждый столбец занимает половину ширины родителя */
+     float: left; /* элементы "плавают" слева */
+     box-sizing: border-box; /* чтобы padding не увеличивал размер элемента */
+     padding: 10px; /* небольшой отступ внутри столбца */
+ }
+
+.column2 {
+    width: 70%; /* каждый столбец занимает половину ширины родителя */
+    float: left; /* элементы "плавают" слева */
+    box-sizing: border-box; /* чтобы padding не увеличивал размер элемента */
+    padding: 10px; /* небольшой отступ внутри столбца */
+}
+
+/* .hovered:hover {
+    background-color: #000000;
+} */
+
+.clickable-block {
+    cursor: pointer;
+    /* ... any other styles to make them visually appealing ... */
+}
+
+.clickable-block:hover {
+    background-color: #f0f0f0;  /* Example hover effect */
+}
+
+.table_blur {
+  background: #f5ffff;
+  /* border-collapse: separate; /* Отключаем слияние границ */
+  border-spacing: 0px; /* Убираем расстояние между ячейками */
+  text-align: left;
+}
+
+.table_blur th,
+.table_blur td {
+  border: 0px solid #e3eef7;
+  padding: 10px 15px;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+/* Скругляем углы у первых и последних ячеек в строках для достижения эффекта скругленной таблицы */
+.table_blur th:first-child,
+.table_blur td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.table_blur th:last-child,
+.table_blur td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Дополнительные стили для th */
+.table_blur th {
+  border-top: 0px solid #777777;
+  border-bottom: 0px solid #777777;
+  /* Остальные стили */
+}
+
+.table_blur tr:nth-child(even) td {
+  background-color: #e6f7ff; /* Цвет фона для ячеек в четных строках */
+}
+
+/* Дополнительные стили для td */
+.table_blur td {
+  /* Остальные стили */
+}
+
+
+.table-container {  /* контейнер для прокрутки
+  height: 300px; /* Высота контейнера, может быть любой, в зависимости от вашего дизайна */
+  overflow-y: scroll; /* Включаем вертикальную прокрутку */
+  display: flex;
+  flex-direction: column-reverse; /* Переворачиваем порядок элементов, чтобы новые элементы появлялись снизу */
+}
+
+
+
+/* для кнопки home */
+
+.hidden{display:none}
+.fixed{position:fixed}
+.top-0{top:0}
+.right-0{right:0}
+.px-6{padding-left:1.5rem;padding-right:1.5rem}
+.py-4{padding-top:1rem;padding-bottom:1rem}
+
+
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Это выровняет элементы по центру по вертикали */
+}
+
+.header-text {
+  flex: 1; /* Это позволяет тексту занимать доступное пространство */
+}
+
+.button-size {
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+}
+
+.button-image {
+  width: 20px;
+  height: 20px;
+}
+
+
+.table_blur th, .table_blur td {
+  border: 0px solid #ddd;
+  border-collapse: collapse;
+}
+
+/* Стилизация для скрытия границ между определенными ячейками */
+.no-border-right {
+  border-right: none;
+}
+
+.no-border-left {
+  border-left: none;
+}
+
+/* Дополнительные стили для выравнивания содержимого */
+.table-cell-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}

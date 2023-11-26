@@ -1,14 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-//
-use Illuminate\Http\Request;
-//
-// class ChatMessageController extends Controller
-// {
-//     //
-// }
 
+use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\ConversationTopic;
@@ -21,34 +15,12 @@ class ChatMessageController extends Controller
 {
       public function __invoke()
       {
-          // получим текущего пользовател
+          // пользователь залогинен?
           $user = Auth::user();
-          // получим все заголовки его диалогов
-          // вытащив из коллекции значение 'header'
-          $titles = [];
-          if ($user and $user->conversationTopics) {
-            // $titles = $user->conversationTopics->pluck('topic');
-            $titles = $user->conversationTopics;
-          }
-          return view('chat', [ 'user' => $user, 'titles' => $titles]);
-      }
-
-      public function store(Request $request)
-      {
-          // $input = $request->all();
-          $input = $request->input('text');
-
-          $input2 = $request->input('data');
-
-          // получим текущего пользователя
-          $user = Auth::user();
-          // получим все заголовки его диалогов
-          // вытащив из коллекции значение 'header'
-          if ($user->conversationTopics) {
-            $titles = $user->conversationTopics->pluck('topic');
-          }
-
-          return view('chat', ['user' => '$user', 'titles' => $titles]);
+          // если user не null, получаем conversationTopics,
+          // иначе, получаем []
+          $titles = $user ? $user->conversationTopics : [];
+          return view('chat', ['user' => $user, 'titles' => $titles]);
       }
 
     // функция обновления таблицы реплик
@@ -60,12 +32,18 @@ class ChatMessageController extends Controller
       return response()->json(['messages'=> $messages, 'topic' => $topic]);
     }
 
+
     public function deleteMessage(Request $request)
     {
-      $message = ConversationMessage::find($request->input('0'));
-      $message->delete();
-      return response()->json($request);
+      $message = ConversationMessage::find($request->input('message_id'));
+      if ($message) {
+          $message->delete();
+          return response()->json(['status' => 'success']);
+      }
+
+      return response()->json(['status' => 'error', 'message' => 'Message not found'], 404);
     }
+
 
     public function addMessage(Request $request)
     {
