@@ -3,8 +3,9 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
 use App\Models\User;
+use Faker\Generator as Faker;
+
 
 class ConversationTopicFactory extends Factory
 {
@@ -21,11 +22,17 @@ class ConversationTopicFactory extends Factory
      *
      * @return array
      */
+
+    protected $model = ConversationTopicFactory::class;
+    protected $fakerLocale = 'ru_RU';
+
     public function definition()
     {
+      // $faker = Faker\Factory::create('ru_RU');
+      $this->faker-> locale('ru_RU');
         return [
             'user_id' => User::all()->random()->id,
-            'topic' => $this->faker->sentence,
+            'topic' => $this->faker->realText($maxNbChars = 50, $indexSize = 2),
         ];
     }
 }
