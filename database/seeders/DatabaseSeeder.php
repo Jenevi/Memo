@@ -35,11 +35,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Создаем 5 пользователей
-        // User::factory(10)
-        //     ->has(ConversationTopic::factory()->count(rand(3, 4)), 'conversationTopics')
-        //     ->create();
-
         User::factory(5)
         ->has(ConversationTopic::factory()
             ->count(3)

@@ -15,23 +15,9 @@ class ConversationMessageFactory extends Factory
      * @return array
      */
 
-     // protected $model = ConversationMessageFactory::class;
-     // protected $fakerLocale = 'ru_RU';
-
-     protected $model = ConversationMessage::class;
-
-      // Установка локали Faker на русский язык
-      protected $fakerLocale = 'ru_RU';
-
-
-
 
     public function definition()
     {
-      // $faker = Faker\Factory::create('ru_RU');
-      // $faker = Faker\Factory::create('ru_RU');
-      // $this->faker-> locale('ru_RU');
-      $this->fakerLocale = 'ru_RU';
         return [
           'conversation_topic_id' => ConversationTopic::all()->random()->id,
           'message' => $this->faker->realText($maxNbChars = 200, $indexSize = 2),
