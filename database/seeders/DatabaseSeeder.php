@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         User::factory(5)
         ->has(ConversationTopic::factory()
             ->count(3)
-            ->has(ConversationMessage::factory()->count(4))
+            ->has(ConversationMessage::factory()->count(40))
         )
         ->create();
     }

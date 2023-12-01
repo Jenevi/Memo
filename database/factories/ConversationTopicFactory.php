@@ -23,13 +23,13 @@ class ConversationTopicFactory extends Factory
      * @return array
      */
 
-    protected $model = ConversationTopicFactory::class;
-    protected $fakerLocale = 'ru_RU';
+    // protected $model = ConversationTopicFactory::class;
+    // protected $fakerLocale = 'ru_RU';
 
     public function definition()
     {
       // $faker = Faker\Factory::create('ru_RU');
-      $this->faker-> locale('ru_RU');
+      // $this->faker-> locale('ru_RU');
         return [
             'user_id' => User::all()->random()->id,
             'topic' => $this->faker->realText($maxNbChars = 50, $indexSize = 2),
