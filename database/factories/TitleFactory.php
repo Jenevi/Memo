@@ -7,7 +7,7 @@ use App\Models\User;
 use Faker\Generator as Faker;
 
 
-class ConversationTopicFactory extends Factory
+class TitleFactory extends Factory
 {
       /**
        * The name of the factory's corresponding model.
@@ -28,7 +28,7 @@ class ConversationTopicFactory extends Factory
     {
         return [
             'user_id' => User::all()->random()->id,
-            'topic' => $this->faker->realText($maxNbChars = 50, $indexSize = 2),
+            'title' => $this->faker->realText($maxNbChars = 50, $indexSize = 2),
         ];
     }
 }

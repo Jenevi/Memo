@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Chat Messages</title>
+    <title>Memo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- получим токен CSRF -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -12,7 +12,7 @@
 <body>
 
 
-<h2>Chat Messages</h2>
+<h2>Memo</h2>
 
 <div class='fixed top-0 right-0 px-6 py-4'>
   <a href="http://127.0.0.1:8080/Dashboard" class="text-sm text-gray-700 dark:text-gray-500 underline">Logout</a>
@@ -21,10 +21,19 @@
 
 <!-- контент первого столбца -->
 <div class="column1">
+
+  <form id="myForm2">
+    <input type="text" name="title" placeholder="Введите заголовок">
+    <!-- Предположим, что у вас есть скрытое поле для note_id -->
+    <input type="hidden" name="title_id" value="123">
+    <button type="button" id="submitButton2">Отправить</button>
+  </form>
+
+
   <!-- {{--    выводим заголовки диалогов--}} -->
   @foreach ($titles as $title)
-    <div class='container darker hovered clickable-block' topic_id='{{ $title->id }}' id='{{ $title->topic }}'>
-        <p class='clickable-block' topic_id='{{ $title->id }}' id='{{ $title->topic }}'>{{ $title->topic }}</p>
+    <div class='container darker hovered clickable-block' title_id='{{ $title->id }}' id='{{ $title->title }}'>
+        <p class='clickable-block' title_id='{{ $title->id }}' id='{{ $title->title }}'>{{ $title->title }}</p>
     </div>
   @endforeach
 </div>
@@ -36,8 +45,8 @@
 <!-- {{--    кнопка ввода новой реплики--}} -->
 <form id="myForm1">
   <input type="text" name="message" placeholder="Введите сообщение">
-  <!-- Предположим, что у вас есть скрытое поле для message_id -->
-  <input type="hidden" name="message_id" value="123">
+  <!-- Предположим, что у вас есть скрытое поле для note_id -->
+  <input type="hidden" name="note_id" value="123">
   <button type="button" id="submitButton1">Отправить</button>
 </form>
 

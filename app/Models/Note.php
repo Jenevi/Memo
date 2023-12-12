@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ConversationMessage extends Model
+class Note extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'message',
+        'note',
     ];
 
 
-    public function user() {
-      return $this->belongsTo(ConversationTopic::class);
+    public function title() {
+      return $this->belongsTo(Title::class);
     }
 }

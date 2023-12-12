@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ConversationTopic extends Model
+class Title extends Model
 {
     use HasFactory;
 
@@ -15,14 +15,14 @@ class ConversationTopic extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'topic',
+        'title',
     ];
 
     public function user() {
       return $this->belongsTo(User::class);
     }
 
-    public function ConversationMessage() {
-      return $this->hasMany(ConversationMessage::class);
+    public function notes() {
+      return $this->hasMany(Note::class);
     }
 }

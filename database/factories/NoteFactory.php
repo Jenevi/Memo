@@ -3,11 +3,11 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\ConversationMessage;
-use App\Models\ConversationTopic;
+use App\Models\Note;
+use App\Models\Title;
 use Faker\Generator as Faker;
 
-class ConversationMessageFactory extends Factory
+class NoteFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,8 +19,8 @@ class ConversationMessageFactory extends Factory
     public function definition()
     {
         return [
-          'conversation_topic_id' => ConversationTopic::all()->random()->id,
-          'message' => $this->faker->realText($maxNbChars = 200, $indexSize = 2),
+          'title_id' => Title::all()->random()->id,
+          'note' => $this->faker->realText($maxNbChars = 200, $indexSize = 2),
         ];
     }
 }

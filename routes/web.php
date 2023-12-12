@@ -19,9 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [\App\Http\Controllers\ChatMessageController::class, '__invoke']);
+Route::get('/home', [\App\Http\Controllers\MemoController::class, '__invoke']);
 Route::get('/Dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::post('/ChatMessage/refreshTable', [\App\Http\Controllers\ChatMessageController::class, 'refreshTable']);
-Route::post('/ChatMessage/deleteMessage', [\App\Http\Controllers\ChatMessageController::class, 'deleteMessage']);
-Route::post('/ChatMessage/addMessage', [\App\Http\Controllers\ChatMessageController::class, 'addMessage']);
+Route::post('/Memo/refreshTable', [\App\Http\Controllers\MemoController::class, 'refreshTable']);
+Route::post('/Memo/deleteNote', [\App\Http\Controllers\MemoController::class, 'deleteNote']);
+Route::post('/Memo/addNote', [\App\Http\Controllers\MemoController::class, 'addNote']);
+Route::post('/Memo/addTitle', [\App\Http\Controllers\MemoController::class, 'addTitle']);

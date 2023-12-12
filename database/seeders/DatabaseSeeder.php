@@ -22,8 +22,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\ConversationTopic;
-use App\Models\ConversationMessage;
+use App\Models\Title;
+use App\Models\Note;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -36,9 +36,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory(5)
-        ->has(ConversationTopic::factory()
+        ->has(Title::factory()
             ->count(3)
-            ->has(ConversationMessage::factory()->count(40))
+            ->has(Note::factory()->count(40))
         )
         ->create();
     }

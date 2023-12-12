@@ -1,58 +1,90 @@
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+    // получаем текст заголовков (Title)
+    $(document).ready(function() {
+
+        $('.clickable-block').on('click', function(event){
+          const data = $(event.target).attr('title_id'); // Получаем текст элемента
+          sessionStorage.setItem('Title', data); // Сохраняем
+          /// выбранный заголовок (Title)
+          fetchDataAndUpdateTable(data)});
     });
 
-        // получаем текст заголовков (ConversationTopic)
-        $(document).ready(function() {
 
-            $('.clickable-block').on('click', function(event){
-              const data = $(event.target).attr('topic_id'); // Получаем текст элемента
-              sessionStorage.setItem('ConversationTopic', data); // Сохраняем
-              /// выбранный заголовок (ConversationTopic)
-              fetchDataAndUpdateTable(data)});
+    document.getElementById('submitButton1').addEventListener('click', function() {
+        // Предположим, что вы хотите отправить форму без перезагрузки страницы
+        const formData = new FormData(document.getElementById('myForm1'));
+
+        let data = sessionStorage.getItem('Title');
+
+        // Здесь вы можете использовать Fetch API для отправки данных
+        fetch('Memo/addNote', { // Замените 'your-endpoint' на URL, куда нужно отправить форму
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          body: JSON.stringify({'title_id': data, 'text': formData.get('message')}),
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.json(); // или response.text(), если ответ в виде текста
+          }
+          throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+          fetchDataAndUpdateTable(data.title_id);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          // Здесь код для обработки ошибок отправки
         });
+      });
 
 
-          document.getElementById('submitButton1').addEventListener('click', function() {
-              // Предположим, что вы хотите отправить форму без перезагрузки страницы
-              const formData = new FormData(document.getElementById('myForm1'));
-              console.log(formData.text);
+document.getElementById('submitButton2').addEventListener('click', function() {
+      // Предположим, что вы хотите отправить форму без перезагрузки страницы
+      const formData = new FormData(document.getElementById('myForm2'));
 
-              let data = sessionStorage.getItem('ConversationTopic');
+      let data = sessionStorage.getItem('Title');
 
-              // Здесь вы можете использовать Fetch API для отправки данных
-              fetch('ChatMessage/addMessage', { // Замените 'your-endpoint' на URL, куда нужно отправить форму
-                method: 'POST',
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                body: JSON.stringify({'topic_id': data, 'text': formData.get('message')}),
-              })
-              .then(response => {
-                if (response.ok) {
-                  return response.json(); // или response.text(), если ответ в виде текста
-                }
-                throw new Error('Network response was not ok.');
-              })
-              .then(data => {
-                fetchDataAndUpdateTable(data.topic_id);
-              })
-              .catch((error) => {
-                console.error('Error:', error);
-                // Здесь код для обработки ошибок отправки
-              });
-            });
+      // Здесь вы можете использовать Fetch API для отправки данных
+      fetch('Memo/addTitle', { // Замените 'your-endpoint' на URL, куда нужно отправить форму
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        body: JSON.stringify({'text': formData.get('title')}),
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json(); // или response.text(), если ответ в виде текста
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(data => {
 
+        location.reload(true);
+        // console.log(data);
+        // fetchDataAndUpdateTable(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Здесь код для обработки ошибок отправки
+      });
+    });
 
   function fetchDataAndUpdateTable(payload) {
-
-    // console.log(payload);
-    fetch('/ChatMessage/refreshTable', {
+    console.log('payload: ', payload);
+    fetch('/Memo/refreshTable', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -75,14 +107,14 @@
 
   function fetchDeletingMessage(payload) {
     // запрос удаления сообщения
-    fetch('ChatMessage/deleteMessage', {
+    fetch('Memo/deleteNote', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-      body: JSON.stringify({message_id: payload})
+      body: JSON.stringify({note_id: payload})
     })
   }
 
@@ -99,11 +131,11 @@ function createDeleteButton() {
 
     // Находим ближайшую родительскую строку (<tr>)
     let row = this.closest('tr');
-    // Получаем значение атрибута message_id
-    let messageId = row.getAttribute('message_id');
-    let topicId = row.getAttribute('topic_id');
-    fetchDeletingMessage(messageId); // функция удаления реплики
-    fetchDataAndUpdateTable(topicId); // обновляем таблицу
+    // Получаем значение атрибута note_id
+    let note_id = row.getAttribute('note_id');
+    let title_id = row.getAttribute('title_id');
+    fetchDeletingMessage(note_id); // функция удаления реплики
+    fetchDataAndUpdateTable(title_id); // обновляем таблицу
   };
   return button;
 }
@@ -112,12 +144,11 @@ function createDeleteButton() {
     function updateTable(data) {
         const table = document.getElementById('dataTable');
         table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
-
-        Object.values(data.messages).forEach(item => {
+        Object.values(data.notes).forEach(item => {
             const row = table.insertRow();
-            row.setAttribute("message_id", item.id); // Предполагая, что у каждого item есть свойство message_id
-            row.setAttribute("topic_id", item.conversation_topic_id); // Предполагая, что у каждого item есть свойство message_id
-            row.insertCell().textContent = item.message;
+            row.setAttribute("note_id", item.id); // Предполагая, что у каждого item есть свойство note_id
+            row.setAttribute("title_id", item.title_id); // Предполагая, что у каждого item есть свойство note_id
+            row.insertCell().textContent = item.note;
             const cellButton = row.insertCell();
             cellButton.appendChild(createDeleteButton());
         });

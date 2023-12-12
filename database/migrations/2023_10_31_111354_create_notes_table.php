@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConversationTopicsTable extends Migration
+class CreateNotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateConversationTopicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('conversation_topics', function (Blueprint $table) {
+        Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text('topic')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->text('note')->nullable();
+            $table->unsignedBigInteger('title_id');
 
-            $table->foreign('user_id')
-              ->references('id')->on('users')
+            $table->foreign('title_id')
+              ->references('id')->on('titles')
               ->onDelete('cascade');
         });
     }
@@ -32,6 +32,6 @@ class CreateConversationTopicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conversation_topics');
+        Schema::dropIfExists('notes');
     }
 }

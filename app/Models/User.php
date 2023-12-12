@@ -43,8 +43,8 @@ class User extends Authenticatable
     ];
 
     // связь один ко многим
-    public function conversationTopics() {
-      return $this->hasMany(ConversationTopic::class);
+    public function titles() {
+      return $this->hasMany(Title::class);
     }
 
 }
