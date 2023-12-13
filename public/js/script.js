@@ -16,9 +16,33 @@ $.ajaxSetup({
     });
 
 
-    document.getElementById('submitButton1').addEventListener('click', function() {
+    function fetchDataAndUpdateTable(payload) {
+      console.log('payload: ', payload);
+      fetch('/Memo/refreshTable', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+          updateTable(data);
+      })
+      .catch(error => console.error('Ошибка:', error));
+    }
+
+
+    document.getElementById('addNoteButton').addEventListener('click', function() {
         // Предположим, что вы хотите отправить форму без перезагрузки страницы
-        const formData = new FormData(document.getElementById('myForm1'));
+        const formData = new FormData(document.getElementById('addNoteForm'));
 
         let data = sessionStorage.getItem('Title');
 
@@ -48,9 +72,9 @@ $.ajaxSetup({
       });
 
 
-document.getElementById('submitButton2').addEventListener('click', function() {
+document.getElementById('addTitleButton').addEventListener('click', function() {
       // Предположим, что вы хотите отправить форму без перезагрузки страницы
-      const formData = new FormData(document.getElementById('myForm2'));
+      const formData = new FormData(document.getElementById('addTitleForm'));
 
       let data = sessionStorage.getItem('Title');
 
@@ -73,8 +97,6 @@ document.getElementById('submitButton2').addEventListener('click', function() {
       .then(data => {
 
         location.reload(true);
-        // console.log(data);
-        // fetchDataAndUpdateTable(data);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -82,28 +104,7 @@ document.getElementById('submitButton2').addEventListener('click', function() {
       });
     });
 
-  function fetchDataAndUpdateTable(payload) {
-    console.log('payload: ', payload);
-    fetch('/Memo/refreshTable', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-        updateTable(data);
-    })
-    .catch(error => console.error('Ошибка:', error));
-  }
+
 
   function fetchDeletingMessage(payload) {
     // запрос удаления сообщения
@@ -121,24 +122,24 @@ document.getElementById('submitButton2').addEventListener('click', function() {
 
 
   // Функция для создания кнопки
-function createDeleteButton() {
-  const button = document.createElement("button");
-  button.className = "button-size";
-  button.innerHTML = '<img src="/images/remove-button.png" alt="Button Image" class="button-image">';
-  // Добавьте здесь логику для удаления строки
-  button.onclick = function() {
-    // Логика удаления
+  function createDeleteButton() {
+    const button = document.createElement("button");
+    button.className = "button-size";
+    button.innerHTML = '<img src="/images/remove-button.png" alt="Button Image" class="button-image">';
+    // Добавьте здесь логику для удаления строки
+    button.onclick = function() {
+      // Логика удаления
 
-    // Находим ближайшую родительскую строку (<tr>)
-    let row = this.closest('tr');
-    // Получаем значение атрибута note_id
-    let note_id = row.getAttribute('note_id');
-    let title_id = row.getAttribute('title_id');
-    fetchDeletingMessage(note_id); // функция удаления реплики
-    fetchDataAndUpdateTable(title_id); // обновляем таблицу
-  };
-  return button;
-}
+      // Находим ближайшую родительскую строку (<tr>)
+      let row = this.closest('tr');
+      // Получаем значение атрибута note_id
+      let note_id = row.getAttribute('note_id');
+      let title_id = row.getAttribute('title_id');
+      fetchDeletingMessage(note_id); // функция удаления реплики
+      fetchDataAndUpdateTable(title_id); // обновляем таблицу
+    };
+    return button;
+  }
 
 
     function updateTable(data) {

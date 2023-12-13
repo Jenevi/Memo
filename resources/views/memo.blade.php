@@ -26,11 +26,11 @@
 <!-- контент первого столбца -->
 <div class="column1">
 
-  <form id="myForm2">
+  <form id="addTitleForm">
     <input type="text" name="title" placeholder="Введите заголовок">
     <!-- Предположим, что у вас есть скрытое поле для note_id -->
-    <input type="hidden" name="title_id" value="123">
-    <button type="button" id="submitButton2">Отправить</button>
+    <input type="hidden" name="title_id">
+    <button type="button" id="addTitleButton">Отправить</button>
   </form>
 
 
@@ -47,11 +47,11 @@
 <!-- контент второго столбца -->
 
 <!-- {{--    кнопка ввода новой реплики--}} -->
-<form id="myForm1">
+<form id="addNoteForm">
   <input type="text" name="message" placeholder="Введите сообщение">
   <!-- Предположим, что у вас есть скрытое поле для note_id -->
-  <input type="hidden" name="note_id" value="123">
-  <button type="button" id="submitButton1">Отправить</button>
+  <input type="hidden" name="note_id">
+  <button type="button" id="addNoteButton">Отправить</button>
 </form>
 
 
