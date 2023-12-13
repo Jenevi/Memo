@@ -14,8 +14,12 @@
 
 <h2>Memo</h2>
 
+
 <div class='fixed top-0 right-0 px-6 py-4'>
-  <a href="http://127.0.0.1:8080/Dashboard" class="text-sm text-gray-700 dark:text-gray-500 underline">Logout</a>
+  <form action="{{ route('logout') }}" method="POST">
+      @csrf
+      <button type="submit">Logout</button>
+  </form>
 </div>
 
 
