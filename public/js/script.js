@@ -41,7 +41,6 @@ $.ajaxSetup({
 
 
     document.getElementById('addNoteButton').addEventListener('click', function() {
-        // Предположим, что вы хотите отправить форму без перезагрузки страницы
         const formData = new FormData(document.getElementById('addNoteForm'));
 
         let data = sessionStorage.getItem('Title');
@@ -126,7 +125,6 @@ document.getElementById('addTitleButton').addEventListener('click', function() {
     const button = document.createElement("button");
     button.className = "button-size";
     button.innerHTML = '<img src="/images/remove-button.png" alt="Button Image" class="button-image">';
-    // Добавьте здесь логику для удаления строки
     button.onclick = function() {
       // Логика удаления
 
@@ -143,6 +141,7 @@ document.getElementById('addTitleButton').addEventListener('click', function() {
 
 
     function updateTable(data) {
+      console.log(data);
         const table = document.getElementById('dataTable');
         table.innerHTML = table.rows[0].innerHTML; // Очистить таблицу,
         Object.values(data.notes).forEach(item => {

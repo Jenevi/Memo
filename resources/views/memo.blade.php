@@ -27,10 +27,10 @@
 <div class="column1">
 
   <form id="addTitleForm">
-    <input type="text" name="title" placeholder="Введите заголовок">
+    <input type="text" name="title" placeholder="Input title" class='inpF'>
     <!-- Предположим, что у вас есть скрытое поле для note_id -->
-    <input type="hidden" name="title_id">
-    <button type="button" id="addTitleButton">Отправить</button>
+    <input type="hidden" name="title_id" class='inpF'>
+    <button type="button" id="addTitleButton" class='inpF'>Add title</button>
   </form>
 
 
@@ -48,10 +48,10 @@
 
 <!-- {{--    кнопка ввода новой реплики--}} -->
 <form id="addNoteForm">
-  <input type="text" name="message" placeholder="Введите сообщение">
+  <input type="text" name="message" placeholder="Input note" class='inpF'>
   <!-- Предположим, что у вас есть скрытое поле для note_id -->
-  <input type="hidden" name="note_id">
-  <button type="button" id="addNoteButton">Отправить</button>
+  <input type="hidden" name="note_id" class='inpF'>
+  <button type="button" id="addNoteButton" class='inpF'>Add note</button>
 </form>
 
 
@@ -60,7 +60,7 @@
     <tr>
       <th>
         <div class="header-container">
-          <span class="header-text">Messages</span>
+          <span class="header-text">Notes</span>
 
         </div>
       </th>

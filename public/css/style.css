@@ -182,3 +182,7 @@ body {
   align-items: center;
   padding: 8px;
 }
+
+.inpF {
+  font-size: 15px;  /* Измените это значение, чтобы установить желаемый размер шрифта */
+}
